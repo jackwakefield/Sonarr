@@ -11,9 +11,10 @@ module.exports = TemplatedCell.extend({
     className : 'queue-actions-cell',
 
     events : {
-        'click .x-remove' : '_remove',
-        'click .x-import' : '_import',
-        'click .x-grab'   : '_grab'
+        'click .x-remove'        : '_remove',
+        'click .x-manual-import' : '_manualImport',
+        'click .x-import'        : '_import',
+        'click .x-grab'          : '_grab'
     },
 
     ui : {
@@ -28,6 +29,14 @@ module.exports = TemplatedCell.extend({
             model         : this.model,
             showBlacklist : showBlacklist
         }));
+    },
+
+    _manualImport : function () {
+        vent.trigger(vent.Commands.ShowManualImport,
+            {
+                downloadId: this.model.get('downloadId'),
+                title: this.model.get('title')
+            });
     },
 
     _import : function() {
