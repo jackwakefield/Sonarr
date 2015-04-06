@@ -41,9 +41,9 @@ namespace NzbDrone.Core.Housekeeping
                 }
             }
 
-            // Vacuuming the log db isn't needed since that's done in a separate housekeeping task
-            _logger.Debug("Compressing main database after housekeeping");
-            _mainDb.Vacuum();
+            // Vacuuming the log db isn't needed since that's done hourly at the TrimLogCommand.
+            //_logger.Debug("Compressing main database after housekeeping");
+            //_mainDb.Vacuum();
         }
 
         public void Execute(HousekeepingCommand message)
