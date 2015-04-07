@@ -39,6 +39,8 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         [Test]
         public void should_resize_image()
         {
+            WindowsOnly();
+
             var mainFile = Path.Combine(TempFolder, "logo.png");
             var resizedFile = Path.Combine(TempFolder, "logo-170.png");
 
@@ -58,6 +60,8 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         [Test]
         public void should_delete_file_if_failed()
         {
+            WindowsOnly();
+
             var mainFile = Path.Combine(TempFolder, "junk.png");
             var resizedFile = Path.Combine(TempFolder, "junk-170.png");
 

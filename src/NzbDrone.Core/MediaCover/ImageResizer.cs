@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ImageResizer;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Core.MediaCover
 {
@@ -22,28 +23,38 @@ namespace NzbDrone.Core.MediaCover
 
         public void Resize(string source, string destination, int height)
         {
-            try
-            {
-                using (var sourceStream = _diskProvider.OpenReadStream(source))
-                {
-                    using (var outputStream = _diskProvider.OpenWriteStream(destination))
-                    {
-                        var settings = new Instructions();
-                        settings.Height = height;
-
-                        var job = new ImageJob(sourceStream, outputStream, settings);
-
-                        ImageBuilder.Current.Build(job);
-                    }
-                }
-            }
-            catch
+            if (!OsInfo.IsWindows)
             {
                 if (_diskProvider.FileExists(destination))
                 {
                     _diskProvider.DeleteFile(destination);
                 }
-                throw;
+            }
+            else
+            {
+                try
+                {
+                    using (var sourceStream = _diskProvider.OpenReadStream(source))
+                    {
+                        using (var outputStream = _diskProvider.OpenWriteStream(destination))
+                        {
+                            var settings = new Instructions();
+                            settings.Height = height;
+
+                            var job = new ImageJob(sourceStream, outputStream, settings);
+
+                            ImageBuilder.Current.Build(job);
+                        }
+                    }
+                }
+                catch
+                {
+                    if (_diskProvider.FileExists(destination))
+                    {
+                        _diskProvider.DeleteFile(destination);
+                    }
+                    throw;
+                }
             }
         }
     }
