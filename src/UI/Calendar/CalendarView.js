@@ -116,7 +116,7 @@ module.exports = Marionette.ItemView.extend({
             data    : {
                 start       : start,
                 end         : end,
-                unmonitored : this.showUnmonitored || false
+                unmonitored : this.showUnmonitored
             },
             success : this._setEventData.bind(this)
         });

@@ -21,7 +21,8 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showUpcoming : function() {
-        this.upcoming.show(new UpcomingCollectionView());
+        this.upcomingView = new UpcomingCollectionView();
+        this.upcoming.show(this.upcomingView);
     },
 
     _showCalendar : function() {
@@ -84,10 +85,12 @@ module.exports = Marionette.Layout.extend({
 
         if (mode === 'all') {
             this.calendarView.setShowUnmonitored(true);
+            this.upcomingView.setShowUnmonitored(true);
         }
 
         else {
             this.calendarView.setShowUnmonitored(false);
+            this.upcomingView.setShowUnmonitored(false);
         }
     }
 });
