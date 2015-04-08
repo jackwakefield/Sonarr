@@ -204,6 +204,12 @@ module.exports = Marionette.Layout.extend({
             episodeIds : ids
         });
     },
+    _searchMissing  : function() {
+        if (window.confirm('Are you sure you want to search for {0} missing episodes? '.format(this.collection.state.totalRecords) +
+                           'One API request to each indexer will be used for each episode. ' + 'This cannot be stopped once started.')) {
+            CommandController.Execute('missingEpisodeSearch', { name : 'missingEpisodeSearch' });
+        }
+    },
     _toggleMonitoredOfSelected : function() {
         var selected = this.missingGrid.getSelectedModels();
 
@@ -227,10 +233,7 @@ module.exports = Marionette.Layout.extend({
             self.collection.fetch();
         });
     },
-    _searchMissing  : function() {
-        if (window.confirm('Are you sure you want to search for {0} missing episodes? '.format(this.collection.state.totalRecords) +
-                           'One API request to each indexer will be used for each episode. ' + 'This cannot be stopped once started.')) {
-            CommandController.Execute('missingEpisodeSearch', { name : 'missingEpisodeSearch' });
-        }
+    _manualImport : function () {
+        vent.trigger(vent.Commands.ShowManualImport);
     }
 });

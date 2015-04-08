@@ -13,7 +13,6 @@ module.exports = TemplatedCell.extend({
     events : {
         'click .x-remove'        : '_remove',
         'click .x-manual-import' : '_manualImport',
-        'click .x-import'        : '_import',
         'click .x-grab'          : '_grab'
     },
 
@@ -37,23 +36,6 @@ module.exports = TemplatedCell.extend({
                 downloadId: this.model.get('downloadId'),
                 title: this.model.get('title')
             });
-    },
-
-    _import : function() {
-        var self = this;
-
-        var promise = $.ajax({
-            url  : window.NzbDrone.ApiRoot + '/queue/import',
-            type : 'POST',
-            data : JSON.stringify(this.model.toJSON())
-        });
-
-        this.$(this.ui.import).spinForPromise(promise);
-
-        promise.success(function() {
-            //find models that have the same series id and episode ids and remove them
-            self.model.trigger('destroy', self.model);
-        });
     },
 
     _grab : function() {
